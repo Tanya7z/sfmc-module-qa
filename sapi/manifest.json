@@ -1,0 +1,29 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/gh/DogeLakeDev/ScriptsForMinecraftServer@latest/modules/sdk/%40sfmc-sdk/schemas/sapi-manifest.v2.schema.json",
+  "schemaVersion": 2,
+  "id": "qa",
+  "name": "知识竞答",
+  "configKey": "qa",
+  "enabledByDefault": true,
+  "canDisable": true,
+  "requires": ["economy", "chat"],
+  "permissions": [
+    "config:read:qa",
+    "service:chat.broadcast",
+    "service:chat.registerInterceptor",
+    "service:economy.account.get",
+    "service:economy.account.credit",
+    "service:economy.account.debit"
+  ],
+  "services": {
+    "provides": [],
+    "requires": [
+      { "name": "chat.broadcast" },
+      { "name": "chat.registerInterceptor" },
+      { "name": "economy.account.get" },
+      { "name": "economy.account.credit" },
+      { "name": "economy.account.debit" }
+    ]
+  },
+  "notes": "chat.broadcast 出题；chat.registerInterceptor 捕获 !答案；加权随机+近5防重；economy credit/debit+幂等键；空/坏题库安全降级。"
+}
