@@ -47,7 +47,10 @@ async function chatBroadcast(content: string, prefix = "竞答"): Promise<void> 
   try {
     await service.call("chat.broadcast", { content, prefix });
   } catch (err) {
-    debug.w(LOG, `broadcast: ${err instanceof Error ? err.message : String(err)}`);
+    debug.w(
+      LOG,
+      `broadcast: ${err instanceof Error ? err.message : String(err)}`,
+    );
   }
 }
 
@@ -106,7 +109,10 @@ async function finishRoundByTimeout(): Promise<void> {
   scheduleNextQuestion();
 }
 
-async function finishRoundByCorrect(winner: Player, q: Question): Promise<void> {
+async function finishRoundByCorrect(
+  winner: Player,
+  q: Question,
+): Promise<void> {
   timeoutRunId = clearRun(timeoutRunId);
   activeIndex = undefined;
   answered.clear();
@@ -209,7 +215,10 @@ function applyBonuses(
                 }`,
               );
             } catch (err) {
-              debug.w(LOG, `item: ${err instanceof Error ? err.message : String(err)}`);
+              debug.w(
+                LOG,
+                `item: ${err instanceof Error ? err.message : String(err)}`,
+              );
             }
             break;
           case "cmd":
@@ -217,7 +226,10 @@ function applyBonuses(
               try {
                 player.runCommand(b.cmd);
               } catch (err) {
-                debug.w(LOG, `cmd: ${err instanceof Error ? err.message : String(err)}`);
+                debug.w(
+                  LOG,
+                  `cmd: ${err instanceof Error ? err.message : String(err)}`,
+                );
               }
             }
             break;
@@ -284,9 +296,6 @@ ModuleRegistry.register({
   lifecycle: {
     registerPermissions() {
       // 纯聊天管道交互，无独立命令权限
-    },
-    registerCommands() {
-      // 无独立命令；作答走 chat 拦截插槽
     },
     registerEvents() {
       // 严禁裸听原生 chatSend；经 chat 前置拦截插槽接入
