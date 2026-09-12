@@ -1,0 +1,208 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/gh/DogeLakeDev/ScriptsForMinecraftServer@latest/modules/sdk/%40sfmc-sdk/schemas/ui-screen.v1.schema.json",
+  "formatVersion": 1,
+  "id": "qa.catalog.widgets",
+  "name": "控件声明",
+  "presentation": "form",
+  "title": "上一级： {{params.from}}",
+  "params": {
+    "from": {
+      "type": "string",
+      "default": "unknown"
+    }
+  },
+  "state": {
+    "name": {
+      "type": "string",
+      "default": "我是String",
+      "maxLength": 16
+    },
+    "locked": {
+      "type": "boolean",
+      "default": false
+    },
+    "choice": {
+      "type": "string",
+      "default": "a"
+    },
+    "amount": {
+      "type": "number",
+      "default": 3,
+      "min": 1,
+      "max": 10,
+      "step": 1
+    }
+  },
+  "load": {
+    "demo": {
+      "service": "qa.catalog.demo",
+      "input": {
+        "playerId": "{{player.id}}"
+      }
+    }
+  },
+  "derived": {
+    "canEdit": {
+      "op": "not",
+      "args": [
+        {
+          "ref": "state.locked"
+        }
+      ]
+    }
+  },
+  "body": [
+    {
+      "id": "section-display",
+      "type": "header",
+      "text": "展示类",
+      "tone": "accent",
+      "tooltip": "header 的 TextOptions.tooltip"
+    },
+    {
+      "id": "s1",
+      "type": "spacer"
+    },
+    {
+      "id": "banner",
+      "type": "image",
+      "source": "{{data.demo.imageSrc}}",
+      "pack": "{{data.demo.imagePack}}",
+      "alt": "示例图",
+      "width": 48,
+      "tooltip": "点击刷新",
+      "trigger": {
+        "type": "refresh"
+      }
+    },
+    {
+      "id": "after-image",
+      "type": "divider"
+    },
+    {
+      "id": "gap",
+      "type": "spacer",
+      "size": "medium"
+    },
+    {
+      "id": "section-inputs",
+      "type": "header",
+      "text": "输入类",
+      "tone": "success"
+    },
+    {
+      "id": "name",
+      "type": "textField",
+      "label": "名称",
+      "bind": "state.name",
+      "placeholder": "不会传到 CustomForm，仅契约字段",
+      "description": "输入框下方说明",
+      "tooltip": "名称悬停提示",
+      "disabledWhen": {
+        "op": "not",
+        "args": [
+          {
+            "ref": "derived.canEdit"
+          }
+        ]
+      }
+    },
+    {
+      "id": "locked",
+      "type": "toggle",
+      "label": "锁定输入",
+      "bind": "state.locked",
+      "description": "打开后禁用其它输入",
+      "tooltip": "锁定开关提示"
+    },
+    {
+      "id": "choice",
+      "type": "dropdown",
+      "label": "选项",
+      "bind": "state.choice",
+      "description": "当前值：{{state.choice}}",
+      "tooltip": "下拉悬停提示",
+      "disabledWhen": {
+        "ref": "state.locked"
+      },
+      "options": [
+        {
+          "label": "甲",
+          "value": "a",
+          "description": "第一项说明"
+        },
+        {
+          "label": "乙",
+          "value": "b",
+          "description": "第二项说明"
+        }
+      ]
+    },
+    {
+      "id": "amount",
+      "type": "slider",
+      "label": "数量",
+      "bind": "state.amount",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "fixedFormatDigits": 0,
+      "description": "滑块说明",
+      "tooltip": "滑块悬停提示",
+      "disabledWhen": {
+        "ref": "state.locked"
+      }
+    },
+    {
+      "id": "save",
+      "type": "button",
+      "label": "成功按钮",
+      "tone": "success",
+      "icon": "{{data.demo.imageSrc}}",
+      "iconPack": "{{data.demo.imagePack}}",
+      "tooltip": "带图标的成功按钮",
+      "disabledWhen": {
+        "ref": "state.locked"
+      },
+      "trigger": {
+        "type": "refresh"
+      }
+    },
+    {
+      "id": "warn",
+      "type": "button",
+      "label": "警告按钮",
+      "tone": "warning",
+      "trigger": {
+        "type": "refresh"
+      }
+    },
+    {
+      "id": "danger",
+      "type": "button",
+      "label": "危险按钮",
+      "tone": "danger",
+      "description": "没有独立 tooltip 时回退到 description",
+      "trigger": {
+        "type": "refresh"
+      }
+    },
+    {
+      "id": "replace-home",
+      "type": "button",
+      "label": "替换回首页",
+      "trigger": {
+        "type": "replace",
+        "to": "qa.catalog.home"
+      }
+    },
+    {
+      "id": "back",
+      "type": "button",
+      "label": "返回",
+      "trigger": {
+        "type": "back"
+      }
+    }
+  ]
+}

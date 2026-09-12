@@ -13,10 +13,23 @@
     "service:chat.registerInterceptor",
     "service:economy.account.get",
     "service:economy.account.credit",
-    "service:economy.account.debit"
+    "service:economy.account.debit",
+    "service:qa.catalog.demo",
+    "service:qa.catalog.echo"
   ],
   "services": {
-    "provides": [],
+    "provides": [
+      {
+        "name": "qa.catalog.demo",
+        "input": { "type": "object" },
+        "output": { "type": "object" }
+      },
+      {
+        "name": "qa.catalog.echo",
+        "input": { "type": "object" },
+        "output": { "type": "object" }
+      }
+    ],
     "requires": [
       { "name": "chat.broadcast" },
       { "name": "chat.registerInterceptor" },
@@ -25,5 +38,5 @@
       { "name": "economy.account.debit" }
     ]
   },
-  "notes": "chat.broadcast 出题；chat.registerInterceptor 捕获 !答案；加权随机+近5防重；economy credit/debit+幂等键；空/坏题库安全降级。"
+  "notes": "chat.broadcast 出题；chat.registerInterceptor 捕获 !答案；加权随机+近5防重；economy credit/debit+幂等键；附带 /c:catalog 声明式 UI 验收目录。"
 }

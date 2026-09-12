@@ -1,0 +1,33 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/gh/DogeLakeDev/ScriptsForMinecraftServer@latest/modules/sdk/%40sfmc-sdk/schemas/ui-feature.v1.schema.json",
+  "formatVersion": 1,
+  "moduleId": "qa",
+  "name": "UI 控件目录",
+  "notes": "开发用测试菜单",
+  "entries": [
+    {
+      "id": "qa.catalog",
+      "surface": "admin",
+      "group": "debug",
+      "title": "这是标题",
+      "description": "这是介绍",
+      "order": 90,
+      "permission": "qa.catalog",
+      "target": "qa.catalog.home"
+    }
+  ],
+  "screens": [
+    {
+      "id": "qa.catalog.home",
+      "file": "screens/home.ui.json"
+    },
+    {
+      "id": "qa.catalog.widgets",
+      "file": "screens/widgets.ui.json"
+    },
+    {
+      "id": "qa.catalog.logic",
+      "file": "screens/logic.ui.json"
+    }
+  ]
+}

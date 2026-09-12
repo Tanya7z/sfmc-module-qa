@@ -1,0 +1,243 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/gh/DogeLakeDev/ScriptsForMinecraftServer@latest/modules/sdk/%40sfmc-sdk/schemas/ui-screen.v1.schema.json",
+  "formatVersion": 1,
+  "id": "qa.catalog.logic",
+  "name": "逻辑与动作",
+  "presentation": "form",
+  "title": "逻辑 · {{player.name}}",
+  "state": {
+    "note": {
+      "type": "string",
+      "default": "hello",
+      "maxLength": 32
+    },
+    "showExtra": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "load": {
+    "demo": {
+      "service": "qa.catalog.demo",
+      "input": {
+        "playerId": "{{player.id}}"
+      }
+    }
+  },
+  "body": [
+    {
+      "id": "show-extra",
+      "type": "toggle",
+      "label": "显示额外说明",
+      "bind": "state.showExtra"
+    },
+    {
+      "id": "extra",
+      "type": "text",
+      "text": "这段由 visibleWhen 控制",
+      "tone": "warning",
+      "visibleWhen": {
+        "ref": "state.showExtra"
+      }
+    },
+    {
+      "id": "when-block",
+      "type": "when",
+      "condition": {
+        "ref": "state.showExtra"
+      },
+      "content": [
+        {
+          "id": "when-text",
+          "type": "info",
+          "items": ["when 为真时出现", "备注：{{state.note}}"]
+        }
+      ]
+    },
+    {
+      "id": "items",
+      "type": "each",
+      "source": "data.demo.items",
+      "as": "item",
+      "template": [
+        {
+          "id": "item-row",
+          "type": "text",
+          "text": "列表项 {{item.name}} ({{item.id}})"
+        }
+      ],
+      "empty": [
+        {
+          "id": "items-empty",
+          "type": "text",
+          "text": "列表为空",
+          "tone": "muted"
+        }
+      ]
+    },
+    {
+      "id": "note",
+      "type": "textField",
+      "label": "备注",
+      "bind": "state.note"
+    },
+    {
+      "id": "echo",
+      "type": "button",
+      "label": "提交动作",
+      "tone": "primary",
+      "trigger": {
+        "type": "action",
+        "action": "echo"
+      }
+    },
+    {
+      "id": "effects-header",
+      "type": "header",
+      "text": "动作效果",
+      "tone": "muted"
+    },
+    {
+      "id": "effect-navigate",
+      "type": "button",
+      "label": "效果：导航控件页",
+      "trigger": {
+        "type": "action",
+        "action": "goWidgets"
+      }
+    },
+    {
+      "id": "effect-replace",
+      "type": "button",
+      "label": "效果：替换回首页",
+      "trigger": {
+        "type": "action",
+        "action": "goHome"
+      }
+    },
+    {
+      "id": "effect-back",
+      "type": "button",
+      "label": "效果：后退",
+      "trigger": {
+        "type": "action",
+        "action": "goBack"
+      }
+    },
+    {
+      "id": "effect-close",
+      "type": "button",
+      "label": "效果：关闭",
+      "tone": "danger",
+      "trigger": {
+        "type": "action",
+        "action": "dismiss"
+      }
+    },
+    {
+      "id": "back",
+      "type": "button",
+      "label": "返回",
+      "trigger": {
+        "type": "back"
+      }
+    }
+  ],
+  "actions": {
+    "echo": {
+      "confirm": {
+        "title": "确认提交",
+        "body": "将把备注「{{state.note}}」交给 qa.catalog.echo",
+        "confirmText": "提交",
+        "cancelText": "取消"
+      },
+      "call": {
+        "service": "qa.catalog.echo",
+        "input": {
+          "playerId": "{{player.id}}",
+          "text": "{{state.note}}"
+        }
+      },
+      "onSuccess": [
+        {
+          "effect": "message",
+          "text": "回声：{{result.message}}",
+          "tone": "success"
+        },
+        {
+          "effect": "setState",
+          "values": {
+            "note": "{{result.message}}"
+          }
+        },
+        {
+          "effect": "refresh"
+        }
+      ],
+      "onError": [
+        {
+          "effect": "message",
+          "text": "失败：{{result.message}}",
+          "tone": "danger"
+        }
+      ]
+    },
+    "goWidgets": {
+      "call": {
+        "service": "qa.catalog.echo",
+        "input": {
+          "text": "navigate"
+        }
+      },
+      "onSuccess": [
+        {
+          "effect": "navigate",
+          "to": "qa.catalog.widgets",
+          "params": {
+            "from": "logic"
+          }
+        }
+      ]
+    },
+    "goHome": {
+      "call": {
+        "service": "qa.catalog.echo",
+        "input": {
+          "text": "replace"
+        }
+      },
+      "onSuccess": [
+        {
+          "effect": "replace",
+          "to": "qa.catalog.home"
+        }
+      ]
+    },
+    "goBack": {
+      "call": {
+        "service": "qa.catalog.echo",
+        "input": {
+          "text": "back"
+        }
+      },
+      "onSuccess": [
+        {
+          "effect": "back"
+        }
+      ]
+    },
+    "dismiss": {
+      "call": {
+        "service": "qa.catalog.echo",
+        "input": {
+          "text": "close"
+        }
+      },
+      "onSuccess": [
+        {
+          "effect": "close"
+        }
+      ]
+    }
+  }
+}

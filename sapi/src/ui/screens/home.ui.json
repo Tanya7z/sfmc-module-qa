@@ -1,0 +1,77 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/gh/DogeLakeDev/ScriptsForMinecraftServer@latest/modules/sdk/%40sfmc-sdk/schemas/ui-screen.v1.schema.json",
+  "formatVersion": 1,
+  "id": "qa.catalog.home",
+  "name": "控件目录",
+  "presentation": "menu",
+  "title": "这是标题",
+  "body": [
+    {
+      "id": "s0",
+      "type": "spacer"
+    },
+    {
+      "id": "title",
+      "type": "header",
+      "text": "我是Title",
+      "tone": "default"
+    },
+    {
+      "id": "s1",
+      "type": "spacer"
+    },
+    {
+      "id": "intro",
+      "type": "text",
+      "text": "我是TEXT",
+      "tone": "muted"
+    },
+    {
+      "id": "s2",
+      "type": "spacer"
+    },
+    {
+      "id": "summary",
+      "type": "info",
+      "tone": "accent",
+      "items": ["玩家：{{player.name}}", "我是INFO"]
+    },
+    {
+      "id": "split",
+      "type": "divider"
+    },
+    {
+      "id": "open-widgets",
+      "type": "button",
+      "label": "我是按钮1",
+      "description": "我是按钮描述1",
+      "tone": "primary",
+      "trigger": {
+        "type": "navigate",
+        "to": "qa.catalog.widgets",
+        "params": {
+          "from": "home"
+        }
+      }
+    },
+    {
+      "id": "open-logic",
+      "type": "button",
+      "label": "我是按钮2",
+      "tooltip": "我是Tooltip",
+      "trigger": {
+        "type": "navigate",
+        "to": "qa.catalog.logic"
+      }
+    },
+    {
+      "id": "close",
+      "type": "button",
+      "label": "关闭",
+      "tone": "muted",
+      "trigger": {
+        "type": "close"
+      }
+    }
+  ]
+}

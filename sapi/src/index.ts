@@ -10,6 +10,12 @@ import { config } from "@sfmc-bds/sdk/sapi/config";
 import { ModuleRegistry } from "@sfmc-bds/sdk/module-loader";
 import { debug, Money, Msg } from "@sfmc-bds/sdk/sapi/runtime";
 import { service } from "@sfmc-bds/sdk/sapi/service";
+import {
+  registerCatalogCommands,
+  registerCatalogPermission,
+  startCatalog,
+  stopCatalog,
+} from "./catalog.js";
 import { parseQaConfig } from "./config.js";
 import { extractAnswerText, matchAnswer } from "./match.js";
 import { nextIntervalTicks, pickWeightedIndex, RecentQueue } from "./pick.js";
@@ -28,6 +34,8 @@ const answered = new Map<string, boolean>();
 let scheduleRunId: number | undefined;
 let timeoutRunId: number | undefined;
 let loopEnabled = false;
+
+registerCatalogCommands();
 
 function clearRun(id: number | undefined): undefined {
   if (id === undefined) return undefined;
@@ -295,7 +303,7 @@ ModuleRegistry.register({
   afterWorldLoad: false,
   lifecycle: {
     registerPermissions() {
-      // 纯聊天管道交互，无独立命令权限
+      registerCatalogPermission();
     },
     registerEvents() {
       // 严禁裸听原生 chatSend；经 chat 前置拦截插槽接入
@@ -318,6 +326,7 @@ ModuleRegistry.register({
         });
     },
     async init() {
+      startCatalog();
       let raw: unknown;
       try {
         raw = await config.get("qa");
@@ -347,6 +356,7 @@ ModuleRegistry.register({
       );
     },
     cleanup() {
+      stopCatalog();
       stopLoop();
       runtimeConfig = undefined;
       debug.i(LOG, "cleanup");
