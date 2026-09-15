@@ -95,7 +95,7 @@
       "type": "textField",
       "label": "名称",
       "bind": "state.name",
-      "placeholder": "不会传到 CustomForm，仅契约字段",
+      "placeholder": "例如 {{player.name}}",
       "description": "输入框下方说明",
       "tooltip": "名称悬停提示",
       "disabledWhen": {
